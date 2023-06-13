@@ -10,7 +10,7 @@ export const ListContasts = styled.ul`
     border-radius: 15px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     gap: 20px;
 
