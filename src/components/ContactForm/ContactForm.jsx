@@ -5,8 +5,10 @@ import * as yup from 'yup';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { Button, Error, FormContact, Input, Label } from './ContactForm.styled';
-import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/contactsSlice';
+import { selectContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const schema = yup.object().shape({
   name: yup.string().required('Name is a required field!!!'),
@@ -21,7 +23,7 @@ const nameInputId = nanoid();
 const numberInputId = nanoid();
 
 export const ContactForm = () => {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   console.log(contacts);
   const dispatch = useDispatch();
 
@@ -37,20 +39,14 @@ export const ContactForm = () => {
     return Boolean(dublicate);
   };
 
-  // const onAddContact = ({ name, number, id = nanoid() }) => {
-  //   if (isDublicate({ name, number, id })) {
-  //     return alert('This contact is already in contacts');
-  //   }
-  //   dispatch(addContact({ id, name, number }));
-  // };
-
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={(values, { resetForm }) => {
         const onAddContact = ({ name, number, id = nanoid() }) => {
           if (isDublicate({ name, number, id })) {
-            return alert('This contact is already in contacts');
+            // return alert('This contact is already in contacts');
+            return toast.error(`This contact is already in contacts`);
           }
           dispatch(addContact({ id, name, number }));
           resetForm();
@@ -58,7 +54,6 @@ export const ContactForm = () => {
         onAddContact({ ...values });
         resetForm();
       }}
-      // onSubmit={handleSubmit}
       validationSchema={schema}
     >
       <FormContact autoComplete="off">
