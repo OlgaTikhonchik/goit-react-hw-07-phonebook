@@ -52,7 +52,6 @@ export const ContactForm = () => {
           resetForm();
         };
         onAddContact({ ...values });
-        resetForm();
       }}
       validationSchema={schema}
     >
